@@ -1,0 +1,31 @@
+﻿1 Se deben descargar los siguientes paquetes NuGet:	
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Tools
+- Miscrosft.VistualStudio.Web.CodeGeneration.Design
+
+2 Se debe abrir la consola desde Herramientas -> Administrador de paquetes NuGet -> Consola del Administrador de paquetes	
+
+3 En la consola se debe poner la siguiente linea de comando 
+Scaffold-DbContext "Nombre del servidor completo" 
+Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+- Ejemplo:
+Scaffold-DbContext "Server=DESKTOP-6P79V2V\SQLEXPRESS;Database=TiendaSimple;Trusted_Connection=True;TrustServerCertificate=True;" 
+Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+4 En la carpeta models se generaran las clases de los modelos y el contexto de la base de datos.
+Uno de esos datos tiene el nombre de la base de datos seguido de context.
+Dentro de ese contexto se debe poner la cadena de conexión a la base de datos.
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-6P79V2V\\SQLEXPRESS;Database=TiendaSimple;Trusted_Connection=True;TrustServerCertificate=True;");
+
+6 En el archivo Program.cs se debe agreagar la siguiente linea
+
+builder.Services.AddDbContext<TiendaSimpleContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PracticaMVCContext")));
+
+
+7 En appsettings.json se debe agregar la cadena de conexión a la base de datos
+    "ConnectionStrings": {
+        "PracticaMVCContext": "Server=DESKTOP-6P79V2V\\SQLEXPRESS;Database=TiendaSimple;Trusted_Connection=True;TrustServerCertificate=True;"
+    }
